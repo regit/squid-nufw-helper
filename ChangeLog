@@ -1,0 +1,12 @@
+2007-12-12
+    * Release of squid_nufw_helper version 1.1
+    * Rewrite autotool scripts (configure.ac and Makefile.am)
+    * Fix crash if opening configuration file fails
+
+2007-06-12
+    * Release of squid_nufw_helper version 1.0
+
+2005-11-22
+    * Added a default value when squid_nufw_helper is run without -c.
+      Default is 1000.
+

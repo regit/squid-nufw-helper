@@ -1,0 +1,86 @@
+Installation guide of squid_nufw_helper
+
+Prerequisites
+=============
+
+ * GNU make: http://www.gnu.org/software/make/ (Debian package: make)
+ * GCC compiler: http://gcc.gnu.org/ (Debian: gcc)
+ * Squid: http://www.squid-cache.org/ (Debian: squid)
+ * NuFW server: http://www.nufw.org/ (Debian: nufw nuauth)
+ * NuFW PostgreSQL logging module (nuauth-log-pgsql)
+   or MySQL logging module (nuauth-log-mysql)
+ * PostgresSQL server: http://www.postgresql.org/ (Debian: postgresql)
+   * Debian package for compilation: libpq-dev
+ * or MySQL server: http://www.mysql.org/ (Debian: mysql-server)
+   * Debian package for compilation: libmysqlclient15-dev
+
+
+Configuration
+=============
+
+If you used subversion to download this software, first run:
+
+    ./autogen.sh
+
+Run configuration:
+
+    ./configure
+
+Default database driver is PostgreSQL, option to use MySQL:
+
+    ./configure --with-mysql
+
+Default Squid UNIX is "proxy", use this option to change it:
+
+    ./configure --with-squid-group=GROUP
+
+Finally, to compile the helper:
+
+   make
+
+
+Installation
+============
+
+To install squid_nufw_helper program, run this command as root user:
+
+    make install
+
+Configuration file (squid_nufw_helper.conf) will be installed in
+PREFIX/etc/squid.
+
+
+squid_nufw_helper configuration
+===============================
+
+The configuration file format is as follows:
+
+keywork value
+
+where keyword is one of these : sql_host, sql_port, sql_database, sql_user,
+sql_pass, sql_table
+
+The SQL parameters should point to the NUFW connection tracking database. Only
+SQL read access is necessary. It is highly recomended you don't use a user with
+write access to the database!
+
+
+Squid configuration
+===================
+
+The squid configuration for the external ACL should be (edit
+/etc/squid/squid.conf):
+
+    external_acl_type nufw %SRC %SRCPORT /usr/local/bin/squid_nufw_helper -f /usr/local/etc/squid/squid_nufw_helper.conf -u
+    acl auth_nufw external nufw
+    http_access allow auth_nufw
+
+ * Warning: Don't forget that the order matters!
+ * Remove "-u" option if you don't want to log username in Squid log
+ * Fix files path if you use different prefix/directories
+
+If the program finds a matching username/ip in the configuration file,
+it returns 'OK', or 'ERR' otherwise.
+
+The "children" parameter lets you define how many helpers will be spawned by squid. Default is 5.
+
