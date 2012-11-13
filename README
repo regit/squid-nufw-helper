@@ -1,15 +1,10 @@
 squid_nufw_helper is an external helper for the Squid external ACL scheme.
 It provides Sigle Sign On (SSO) based on the NuFW firewall suite.
 
-Website: http://software.inl.fr/trac/trac.cgi/wiki/EdenWall/squid_nufw_helper
-
-NuFW website: http://www.nufw.org/
-
-
 Usage
 =====
 
-The usage for the program is:
+The usage for the program is ::
 
     squid_nufw_helper -f <configuration_file> -u -c 1000
 
